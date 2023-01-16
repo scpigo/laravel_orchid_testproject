@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/ajax/dadata', [\App\Http\Controllers\AjaxController::class, 'adress']);
+Route::post('/ajax/classification', [\App\Http\Controllers\AjaxController::class, 'classification']);

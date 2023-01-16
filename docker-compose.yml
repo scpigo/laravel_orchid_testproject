@@ -1,0 +1,41 @@
+version: '3.5'
+
+services:
+  laravel:
+    build:
+      context: ./docker/php
+    volumes:
+      - .:/var/www/html
+      - ./../repositories:/var/www/html/packages
+    ports:
+      - 8080:80
+
+  pgsql:
+    image: postgres:9.5
+    volumes:
+      - ./docker/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=laravel
+      - POSTGRES_USER=laravel
+      - POSTGRES_PASSWORD=secret
+
+  phppgadmin:
+    image: neimheadh/phppgadmin:latest
+    ports:
+      - '8888:80'
+    environment:
+      - POSTGRES_HOST=pgsql
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=laravel
+      - POSTGRES_PASS=secret
+    depends_on:
+      - pgsql
+
+  cron:
+      container_name: cron
+      build:
+          context: './docker/cron'
+      volumes:
+          - ".:/var/www/html"
+      depends_on:
+          - laravel

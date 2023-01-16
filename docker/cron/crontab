@@ -1,0 +1,1 @@
+0 3 * * * /usr/local/bin/php /var/www/html/artisan waybill:check >> /var/log/cron.log 2>&1
